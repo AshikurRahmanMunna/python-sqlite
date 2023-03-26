@@ -4,6 +4,9 @@ from pathlib import Path
 import sqlite3
 
 movies = json.loads(Path("movies.json").read_text())
-print(movies)
 
-sqlite3.connect("db.sqlite3")
+with sqlite3.connect("db.sqlite3") as conn:
+    command = "INSERT INTO Movies VALUES(?, ?, ?)"
+    for movie in movies:
+        conn.execute(command, tuple(movie.values()))
+    conn.commit()
