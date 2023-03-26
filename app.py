@@ -6,7 +6,10 @@ import sqlite3
 movies = json.loads(Path("movies.json").read_text())
 
 with sqlite3.connect("db.sqlite3") as conn:
-    command = "INSERT INTO Movies VALUES(?, ?, ?)"
-    for movie in movies:
-        conn.execute(command, tuple(movie.values()))
+    command = "SELECT * FROM Movies"
+    cursor = conn.execute(command)
+    # for data in cursor:
+    #     print({"id": data[0], "title": data[1], "year": data[2]})
+    movies = cursor.fetchall()
+    print(movies)
     conn.commit()
