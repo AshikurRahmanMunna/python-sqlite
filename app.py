@@ -1,13 +1,17 @@
-"""SQLite"""
-import json
-from pathlib import Path
-import sqlite3
+"""send email python"""
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 
-movies = json.loads(Path("movies.json").read_text())
+message = MIMEMultipart()
+message["from"] = "Your Name"
+message["to"] = "yourrecipient@example.com"
+message["subject"] = "Test email."
+message.attach(MIMEText("Body"))
 
-with sqlite3.connect("db.sqlite3") as conn:
-    command = "SELECT * FROM Movies"
-    cursor = conn.execute(command)
-    for data in cursor:
-        print({"id": data[0], "title": data[1], "year": data[2]})
-    conn.commit()
+with smtplib.SMTP(host="smtp.gmail.com", port=587) as smtp:
+    smtp.ehlo()
+    smtp.starttls()
+    smtp.login("yourEmail@example.com", "yourpassword")
+    smtp.send_message(message)
+    print('Sent...')
