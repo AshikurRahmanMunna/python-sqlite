@@ -1,11 +1,12 @@
 """send email python"""
 import subprocess
 
-completed = subprocess.run(
-    ["python", "other1.py"], check=False, capture_output=True, text=True)
-
-print(completed.returncode)
-if completed.returncode == 0:
-    print(completed.stdout)
-else:
+try:
+    completed = subprocess.run(
+        ["python", "other1.py"], check=False, capture_output=True, text=True)
+    print(completed.args)
     print(completed.stderr)
+    print(completed.stdout)
+    print(completed.returncode)
+except ChildProcessError as ex:
+    print(ex)
